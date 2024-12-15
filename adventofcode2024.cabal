@@ -1,0 +1,24 @@
+cabal-version:      3.4
+name:               adventofcode2024
+version:            1.0
+-- synopsis:
+-- description:
+author:             Matthijs Boers
+-- copyright:
+build-type:         Simple
+-- extra-source-files:
+
+data-files:
+    input/day1.txt
+
+common warnings
+    ghc-options: -Wall
+
+executable adventofcode2024
+    import:           warnings
+    main-is:          Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends:    base ^>=4.18.2.1
+    hs-source-dirs:   src
+    default-language: Haskell2010
