@@ -1,5 +1,5 @@
 module Day4 where
-import Data.List (transpose)
+import Data.List (transpose, unfoldr)
 import Text.Regex.TDFA (AllTextMatches(getAllTextMatches), (=~))
 import Data.Maybe (catMaybes)
 
@@ -24,9 +24,35 @@ diagonals xs = map catMaybes $ transpose $ map addPadding $ calculatePadding xs
           addPadding (ys, padRight, padLeft) = replicate padLeft Nothing ++ map Just ys ++ replicate padRight Nothing
 
 findMatches :: String -> Int
-findMatches s = length $ 
-                (getAllTextMatches (s =~ "XMAS") :: [String]) ++ 
+findMatches s = length $
+                (getAllTextMatches (s =~ "XMAS") :: [String]) ++
                 (getAllTextMatches (s =~ "SAMX") :: [String])
+
+day4part2 :: IO ()
+day4part2 = do
+    input <- readDay4
+    let blocks = concatMap generateBlocks (generateSets input)
+    print $ sum $ map (fromEnum . matchBlock) blocks
+
+generateSets :: [a] -> [[a]]
+generateSets = unfoldr generate
+    where generate ys
+           | length ys >= 3 = Just (take 3 ys, drop 1 ys)
+           | otherwise      = Nothing
+
+generateBlocks :: [[a]] -> [[[a]]]
+generateBlocks = unfoldr generate
+    where generate yys
+           | length (head yys) >= 3 = Just (map (take 3) yys, map (drop 1) yys)
+           | otherwise            = Nothing
+
+
+matchBlock :: [String] -> Bool
+matchBlock [['M', _, 'S'], [_, 'A', _], ['M', _, 'S']] = True
+matchBlock [['M', _, 'M'], [_, 'A', _], ['S', _, 'S']] = True
+matchBlock [['S', _, 'M'], [_, 'A', _], ['S', _, 'M']] = True
+matchBlock [['S', _, 'S'], [_, 'A', _], ['M', _, 'M']] = True
+matchBlock _ = False
 
 readDay4 :: IO [String]
 readDay4 = do

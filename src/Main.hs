@@ -2,5 +2,5 @@ module Main where
 import Day4
 
 main :: IO ()
-main = day4part1
+main = day4part2
 
