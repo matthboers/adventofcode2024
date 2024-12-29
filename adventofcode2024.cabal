@@ -22,6 +22,7 @@ executable adventofcode2024
         Day2
         Day3
         Day4
+        Day5
     -- other-extensions:
     build-depends:    
         base ^>=4.18.2.1,
